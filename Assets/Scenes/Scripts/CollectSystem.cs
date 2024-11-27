@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CollectSystem : MonoBehaviour
@@ -7,13 +5,6 @@ public class CollectSystem : MonoBehaviour
     public GameObject[] items; // 생성할 아이템 프리팹 배열
     public Transform spawnPoint; // 아이템을 생성할 위치
     public float collectRange = 2f; // 아이템을 수집할 수 있는 거리
-
-    private Inventory inventory;
-
-    private void Start()
-    {
-        inventory = GetComponent<Inventory>();
-    }
 
     private void Update()
     {
@@ -34,11 +25,27 @@ public class CollectSystem : MonoBehaviour
         float distance = Vector2.Distance(transform.position, spawnPoint.position);
         if (distance <= collectRange)
         {
-            int randomIndex = Random.Range(0, items.Length);
-            GameObject collectedItem = Instantiate(items[randomIndex], spawnPoint.position, Quaternion.identity);
+            Inventory inventory = GetComponent<Inventory>();
+            if (inventory != null && inventory.IsFull())
+            {
+                // 슬롯이 가득 찬 경우 메시지 표시
+                InventoryMessage inventoryMessage = FindObjectOfType<InventoryMessage>();
+                if (inventoryMessage != null)
+                {
+                    inventoryMessage.ShowMessage("슬롯이 현재 전부 가득찼습니다!");
+                }
+                return;
+            }
 
-            // 인벤토리에 아이템 추가
-            inventory.AddItem(collectedItem);
+            int randomIndex = Random.Range(0, items.Length);
+
+            // 인벤토리에 아이템 추가 (Instantiate 제거)
+            if (inventory != null)
+            {
+                inventory.AddItem(items[randomIndex]); // 프리팹 대신 데이터를 추가
+            }
+
+            Debug.Log("아이템을 수집했습니다: " + items[randomIndex].name);
         }
         else
         {

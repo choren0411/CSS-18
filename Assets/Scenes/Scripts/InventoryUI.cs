@@ -18,21 +18,21 @@ public class InventoryUI : MonoBehaviour
 
     public void UpdateInventoryUI()
     {
-        // 모든 슬롯을 비웁니다
+        // 모든 슬롯 초기화
         foreach (Image slot in itemSlots)
         {
             slot.sprite = null;
             slot.enabled = false;
         }
 
-        // 인벤토리에 있는 아이템을 슬롯에 채웁니다
+        // 인벤토리에 있는 아이템을 슬롯에 표시
         for (int i = 0; i < inventory.collectedItems.Count; i++)
         {
             if (i < itemSlots.Count)
             {
                 GameObject item = inventory.collectedItems[i];
                 Sprite itemSprite = item.GetComponent<SpriteRenderer>().sprite;
-                itemSlots[i].sprite = itemSprite;
+                itemSlots[i].sprite = itemSprite; // 슬롯에 아이템 스프라이트 표시
                 itemSlots[i].enabled = true;
             }
         }
