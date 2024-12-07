@@ -14,11 +14,13 @@ public class InventoryUI : MonoBehaviour
     {
         inventory = FindObjectOfType<Inventory>();
         UpdateInventoryUI();
+
     }
 
     public void UpdateInventoryUI()
     {
-        // 모든 슬롯 초기화
+        Debug.Log(itemSlots.Count);
+        // 모든 슬롯 초기화  
         foreach (Image slot in itemSlots)
         {
             slot.sprite = null;
@@ -28,8 +30,10 @@ public class InventoryUI : MonoBehaviour
         // 인벤토리에 있는 아이템을 슬롯에 표시
         for (int i = 0; i < inventory.collectedItems.Count; i++)
         {
+            Debug.Log(itemSlots.Count);
             if (i < itemSlots.Count)
             {
+              
                 GameObject item = inventory.collectedItems[i];
                 Sprite itemSprite = item.GetComponent<SpriteRenderer>().sprite;
                 itemSlots[i].sprite = itemSprite; // 슬롯에 아이템 스프라이트 표시
